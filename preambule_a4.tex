@@ -1,0 +1,40 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                       Style                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\geometry{a4paper, top=3cm, bottom=3cm, left=3cm, right=3cm, headheight=1cm, headsep=0.5cm}
+\pagestyle{fancy}
+\fancyhead[L]{{\footnotesize \titre\\\soustitre}}
+\fancyhead[R]{{\footnotesize \auteur\\\etabcourt}}
+\fancyfoot[C]{\thepage\ / \pageref{LastPage}}
+\fancypagestyle{plain}{\fancyhead{}\renewcommand{\headrule}{}}
+
+\AddToHook{shipout/background}{%
+\put (1.3cm, -0.3\paperheight){\rotatebox[origin=c]{90}{{\large \normalfont \textbf{\textcolor{red}{\avertissement}}}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     Theorems                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{propriete}{Propriété}
+\newtheorem{theoreme}{Théorème}
+\newtheorem{theorem}{Theorem}
+\newtheorem{postulat}{Postulat}
+\newtheorem{lemme}{Lemme}
+\newtheorem*{note}{N-B}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Définition}
+\newtheorem{definition-en}{Definition}
+\newtheorem{exemple}{Exemple}
+\newtheorem{example}{Example}
+
+
+\theoremstyle{remark}
+\newtheorem*{remarque}{Remarque}
+\newtheorem*{remark}{Remark}
+
+
+
+%%%%%
+\hypersetup{hidelinks, unicode}

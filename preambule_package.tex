@@ -1,0 +1,247 @@
+\usepackage[utf8]{inputenc} % encodage entree
+\usepackage[square,numbers]{natbib} % Bibliography
+\usepackage[main = french,english,greek]{babel} % français
+\usepackage[T1]{fontenc} % encodage sortie
+\usepackage{amsmath} % polices
+\usepackage{amssymb} % symboles
+\usepackage{amsthm} % th, prop etc.
+\usepackage{xparse}
+\usepackage{geometry} % correction footnote
+\usepackage{fancyhdr} % entêtes et pied-de-page
+\usepackage{appendix} % annexes
+\usepackage{graphicx}  % images
+\usepackage{xcolor} % couleur
+\usepackage{mathrsfs} % police maths /mathscr
+\usepackage{array} % tableau
+\usepackage{lmodern} % police
+\usepackage{slantsc} % correction police
+\usepackage{fix-cm} % correction CM
+\usepackage{chemfig} % formules chimiques
+\usepackage[version=4]{mhchem}
+\usepackage{listings} % code
+\usepackage{lipsum} % lorem ipsum
+\usepackage{tikz} % schem
+\usepackage[RPvoltages, european, straight voltages, cuteinductors]{circuitikz} % circuits
+\usepackage{tikz-3dplot} % plot 3D
+\usepackage{esint} % intégrales
+\usepackage{textgreek} % lettres grecques en roman
+\usepackage{setspace} %  interlignes
+\usepackage{lastpage} %  dernière page
+\usepackage{paracol} % plusieurs colones
+\usepackage[bottom]{footmisc} % correction footnote
+\usepackage{lscape} % format paysage pour une page : environnement landscape (remplacer par le package pdflscape si besoin)
+\usepackage[arrowdel]{physics} % Un package essentiel
+\usepackage{afterpage} % pour intégrer le \clearpage dès la fin de page
+\usepackage{caption}% figure...
+\usepackage{subcaption}% sous-figures...
+\usepackage{multirow} % case de plusieurs lignes dans un tableau
+\usepackage{datetime} % date et heure de compilation
+\usepackage{hyperref} % ref. url etc... en dernier !
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%            Corrections et paramètres              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mathcode`\.="013B % virgule à la place du point en séparation décimale
+\setlength\parindent{0cm} % pas d'indentation des paragraphes
+\renewcommand{\oiint}{\varoiint} % intégrales
+
+\rmfamily
+\DeclareFontShape{T1}{lmr}{b}{sc}{<->ssub*cmr/bx/sc}{}
+\DeclareFontShape{T1}{lmr}{bx}{sc}{<->ssub*cmr/bx/sc}{}
+\DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub*cmr/m/scit}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{siam} %siam, yii
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\numberwithin{equation}{section}
+\lstset{frame=single, numbers=left, showstringspaces=false, basicstyle=\footnotesize\ttfamily, breaklines=true, commentstyle=\color{ym_bleu}, keywordstyle=\color{ym_jaune}, stringstyle=\color{ym_vert}, extendedchars=true, literate={à}{{a}}1 {â}{{a}}1 {é}{{e}}1 {è}{{e}}1 {ê}{{e}}1 {ë}{{e}}1 {ï}{{i}}1 {û}{u}1 {ù}{u}1 {î}{i}1 {À}{{A}}1 {Â}{{A}}1 {É}{{E}}1 {È}{{E}}1 {Ê}{{E}}1 {Ë}{{E}}1 {Ï}{{I}}1 {Û}{U}1 {Ù}{U}1 {Î}{I}1}
+
+\usetikzlibrary{babel}
+\usetikzlibrary{decorations.pathmorphing, decorations.markings}
+\tikzset{gluon/.style={thick, decorate, decoration={coil, segment length=4pt}}}
+\tikzset{boson/.style={thick, decorate, decoration={coil,aspect=0}}}
+\tikzset{higgs/.style={thick, dashed}}
+\tikzset{fermion/.style={thick, postaction={decorate}, decoration={markings,mark=at position 0.55 with {\arrow{latex}}}}}
+\tikzset{antifermion/.style={thick, postaction={decorate}, decoration={markings,mark=at position 0.55 with {\arrow{latex reversed}}}}}
+
+% \hypersetup{unicode=false}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     Couleurs                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{ym_noir}{HTML}{121212}
+\definecolor{ym_blanc}{HTML}{dddddd}
+\definecolor{ym_bleu}{HTML}{003763}
+\definecolor{ym_bleuc}{HTML}{3898ff}
+\definecolor{ym_jaune}{HTML}{DAA21C}
+\definecolor{ym_vert}{HTML}{10AA10}
+\definecolor{ym_violet}{HTML}{AA10AA}
+
+\colorlet{fg}{black}
+\colorlet{bg}{white}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     Commandes                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% renewmathoperator
+\makeatletter
+\newcommand\RedeclareMathOperator{%
+  \@ifstar{\def\rmo@s{m}\rmo@redeclare}{\def\rmo@s{o}\rmo@redeclare}%
+}
+\newcommand\rmo@redeclare[2]{%
+  \begingroup \escapechar\m@ne\xdef\@gtempa{{\string#1}}\endgroup
+  \expandafter\@ifundefined\@gtempa
+     {\@latex@error{\noexpand#1undefined}\@ehc}%
+     \relax
+  \expandafter\rmo@declmathop\rmo@s{#1}{#2}}
+\newcommand\rmo@declmathop[3]{%
+  \DeclareRobustCommand{#2}{\qopname\newmcodes@#1{#3}}%
+}
+\@onlypreamble\RedeclareMathOperator
+\makeatother
+% basdepage
+\newcommand\basdepage[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+
+% blackboard
+\newcommand{\ens}[1]{\mathbf{#1}}
+\newcommand{\esp}[1]{\mathcal{#1}}
+\newcommand{\fk}[1]{\mathfrak{#1}}
+\newcommand{\mat}[1]{\mathcal{#1}} % equiv \esp
+\newcommand{\N}{\ens{N}}
+\newcommand{\Z}{\ens{Z}}
+\newcommand{\D}{\ens{D}}
+\newcommand{\Q}{\ens{Q}}
+\newcommand{\R}{\ens{R}}
+\newcommand{\C}{\ens{C}}
+\newcommand{\K}{\ens{K}}
+\newcommand{\etoile}{^{\displaystyle \ast}}
+\newcommand{\adj}{^{\dagger}}
+\newcommand{\std}{\text{°}}
+\newcommand{\odeg}{\text{°}}
+\newcommand{\fonc}[2]{\left\langle {#1},\,{#2}\right\rangle}
+\newcommand{\sfonc}[2]{\langle {#1},\,{#2}\rangle}
+
+% opérateurs
+\DeclareMathOperator{\pgcd}{pgcd}
+%\DeclareMathOperator{\division}{\div}
+\DeclareMathOperator{\Vect}{Vect}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Image}{Im}
+\DeclareMathOperator{\Sp}{Sp}
+%\DeclareMathOperator{\grad}{\vect{\nabla}} % intégré à physics
+%\RedeclareMathOperator{\div}{\vect{\nabla}\cdot} % intégré à physics
+\newcommand{\vect}[1]{\va*{#1}}
+\newcommand{\rot}{\curl}
+\DeclareMathOperator{\lap}{\laplacian}
+\DeclareMathOperator{\vlap}{\vect{\nabla}^2}
+\DeclareMathOperator{\ham}{\mathcal H}
+\DeclareMathOperator{\lag}{\mathcal L}
+\DeclareMathOperator{\mom}{\mathcal M}
+\DeclareMathOperator{\lang}{\mathscr L}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\p}{\mathbb P}
+\DeclareMathOperator{\arctandeux}{arctan2}
+%\DeclareMathOperator{\cotan}{cotan} % intégré à physics
+\DeclareMathOperator{\dal}{\square}
+\DeclareMathOperator{\TF}{TF}
+\DeclareMathOperator{\FT}{FT}
+\DeclareMathOperator{\VP}{VP}
+
+\newcommand{\unite}[1]{\mathrm{\ #1}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\im}{\mathrm{i}}
+\newcommand{\jm}{\mathrm{j}}
+\newcommand{\E}[1]{\times 10^{#1}}
+\newcommand{\cqfd}{\hspace*{0pt} \hfill $\square$}
+\newcommand{\NA}{\mathcal{N}_\mathrm{A}}
+\newcommand{\kB}{k_\mathrm{B}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\ul}{\underline}
+\newcommand{\ol}{\overline}
+\newcommand{\mathmu}{\text{\normalfont{\textmu}}}
+\newcommand{\mathOmega}{\text{\normalfont{\textOmega}}}
+\newcommand{\mathalpha}{\text{\normalfont{\textalpha}}}
+\newcommand{\mathbeta}{\text{\normalfont{\textbeta}}}
+\newcommand{\mathgamma}{\text{\normalfont{\textgamma}}}
+\newcommand{\mathtau}{\text{\normalfont{\texttau}}}
+\newcommand{\mathnu}{\text{\normalfont{\textnu}}}
+\newcommand{\act}{\mathcal S}
+\newcommand{\eqdef}{\overset{\mathrm{def}}{=}}
+\newcommand{\cste}{\mathrm{cste}}
+\newcommand{\cst}{\mathrm{cst}}
+\newcommand{\moy}[1]{\left\langle{#1}\right\rangle}
+\newcommand{\smoy}[1]{\langle{#1}\rangle}
+\newcommand{\ope}[1]{\hat{#1}}
+\newcommand{\opevect}[1]{\hat{\vb{#1}}}
+\newcommand{\sol}{\odot}
+\newcommand{\ter}{\oplus}
+\newcommand{\uma}{\mathrm{u}}
+\DeclareDocumentCommand\atom{m g g g}{
+  \IfNoValueTF{#2}{\ce{#1}}{
+    \IfNoValueTF{#3}{\ce{^{#2}{#1}}}{
+      \IfNoValueTF{#4}{\ce{^{#2}_{#3}{#1}}}{
+        \ce{^{#2}_{#3}{#1}_{#4}}
+      }
+    }
+  }
+}
+\DeclareDocumentCommand\underbraceset{m g}{
+  \IfNoValueTF{#2}{\underbrace{#1}}{
+    \underset{#1}{\underbrace{#2}}
+  }
+}
+% vecteurs unitaires
+\newcommand{\ux}{\vu{u}_x}
+\newcommand{\uy}{\vu{u}_y}
+\newcommand{\uz}{\vu{u}_z}
+\newcommand{\ur}{\vu{u}_r}
+\newcommand{\un}{\vu{u}_n}
+\newcommand{\ut}{\vu{u}_t}
+\newcommand{\urho}{\vu{u}_\rho}
+\newcommand{\utheta}{\vu{u}_\theta}
+\newcommand{\uvartheta}{\vu{u}_\vartheta}
+\newcommand{\uphi}{\vu{u}_\phi}
+\newcommand{\uvarphi}{\vu{u}_\varphi}
+
+\newcommand{\ex}{\vu{e}_x}
+\newcommand{\ey}{\vu{e}_y}
+\newcommand{\ez}{\vu{e}_z}
+\newcommand{\er}{\vu{e}_r}
+\newcommand{\en}{\vu{e}_n}
+\newcommand{\et}{\vu{e}_t}
+\newcommand{\erho}{\vu{e}_\rho}
+\newcommand{\etheta}{\vu{e}_\theta}
+\newcommand{\evartheta}{\vu{e}_\vartheta}
+\newcommand{\ephi}{\vu{e}_\phi}
+\newcommand{\evarphi}{\vu{e}_\varphi}
+
+% d, déron, etc.
+\newcommand{\dx}{\deh{x}}
+\newcommand{\dy}{\deh{y}}
+\newcommand{\dz}{\deh{z}}
+\newcommand{\dt}{\deh{t}}
+\newcommand{\dr}{\deh{r}}
+\newcommand{\drho}{\deh{\rho}}
+\newcommand{\dtheta}{\deh{\theta}}
+\newcommand{\dvartheta}{\deh{\vartheta}}
+\newcommand{\dphi}{\deh{\phi}}
+\newcommand{\dvarphi}{\deh{\varphi}}
+\newcommand{\deh}{\dd}
+\newcommand{\deron}{\partial}
+\newcommand{\ddr}{\dd[3]{\vect r}}
+\newcommand{\ddp}{\dd[3]{\vect p}}
+
+%\newcommand{\sderon}{\text{{\scriptsize $\partial$}}} % en attendant de trouver mieux solution…
+\newcommand{\Deh}{\mathrm{D}}
+\newcommand{\dehlta}{\var} % en fait non utilisé...
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\etal}{\textit{et al}}
+
+\newenvironment{question}[1]{\textbf{Q\,#1.}}{}
+\newenvironment{systeme}{\left\{\begin{array}{ll}}{\end{array}\right.} % Attention, l'accolade est bien fermée ici !
