@@ -1,4 +1,4 @@
-# LaTeX template v0
+# LaTeX Template v0
 ## [FR] Utilisation de mes fichiers LaTeX
 
 Une nouvelle version est disponible.
