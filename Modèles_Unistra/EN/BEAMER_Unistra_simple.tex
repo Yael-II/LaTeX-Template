@@ -1,0 +1,45 @@
+\documentclass[11pt]{beamer} %twocolumn
+\usepackage{import}
+
+\import{/Users/yael/.lib_tex}{preambule_package}
+
+\usetheme{Berlin}
+\usefonttheme{serif}
+\setbeamercolor{structure}{fg=ym_bleu}
+\setbeamertemplate{page number in head/foot}[framenumber]
+\beamertemplatenavigationsymbolsempty
+
+% compteurs (si décalage)
+\setcounter{part}{0}
+\setcounter{section}{0}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+
+% Titre, auteur et date.
+\title{Lorem}
+\subtitle{Ipsum}
+\author{Yaël \textsc{Moussouni}}
+\institute[Unistra, P\&E, MSc1-MoFP]{University of Strasbourg, Faculty of Physics and Engineering\\ Master of Science 1 -- Magister of Fondamental Physics}
+
+\date{2023-2024}
+
+\titlegraphic{\includegraphics[height=1.5cm]{/Users/yael/Documents/Établissements/Unistra/003_Signature_Faculte_Physique/1_Signature_Generique/Web_PNG/Faculte_Physique_Etroit_Couleur.png}}
+
+% paramètres
+\setbeamertemplate{caption}[numbered]
+%\AtBeginSection[]{
+%  \begin{frame}
+%    \frametitle{Table des matières}
+%    \tableofcontents[currentsection]
+%  \end{frame}
+%}
+
+\begin{document}
+\selectlanguage{english}
+\maketitle
+
+\begin{frame}{Contents}
+\tableofcontents
+\end{frame}
+
+\end{document}
