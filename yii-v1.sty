@@ -1,0 +1,456 @@
+\ProvidesPackage{yii-v1}[2024-01-01]
+
+\RequirePackage[utf8]{inputenc} % encodage entree
+\RequirePackage{natbib} % bibliography
+\RequirePackage[english,french,greek]{babel} % français
+\RequirePackage[T1]{fontenc} % encodage sortie
+\RequirePackage{amsmath} % polices
+\RequirePackage{amssymb} % symboles
+\RequirePackage{amsthm} % th, prop etc.
+\RequirePackage{xparse} % fonctions
+\RequirePackage{geometry} % correction footnote
+\RequirePackage{fancyhdr} % entêtes et pied-de-page
+\RequirePackage{appendix} % annexes
+\RequirePackage{graphicx}  % images
+\RequirePackage{xcolor} % couleur
+\RequirePackage{mathrsfs} % police maths \mathscr
+\RequirePackage{array} % tableau
+\RequirePackage{lmodern} % police
+\RequirePackage{slantsc} % correction police
+\RequirePackage{fix-cm} % correction CM
+\RequirePackage{chemfig} % formules chimiques
+\RequirePackage[version=4]{mhchem}
+\RequirePackage{listings} % code
+\RequirePackage{lipsum} % lorem ipsum
+\RequirePackage{tikz} % schem
+\RequirePackage[RPvoltages, european, straight voltages, cuteinductors]{circuitikz} % circuits
+\RequirePackage{tikz-3dplot} % plot 3D
+\RequirePackage{esint} % intégrales
+\RequirePackage{textgreek} % lettres grecques en roman
+\RequirePackage{setspace} %  interlignes
+\RequirePackage{paracol} % plusieurs colones
+\RequirePackage[bottom]{footmisc} % correction footnote
+\RequirePackage{lscape} % format paysage pour une page : environnement landscape (remplacer par le package pdflscape si besoin)
+\RequirePackage[arrowdel]{physics} % Un package essentiel
+\RequirePackage{afterpage} % pour intégrer le \clearpage dès la fin de page
+\RequirePackage{caption}% figure...
+\RequirePackage{subcaption}% sous-figures...
+\RequirePackage{multirow} % case de plusieurs lignes dans un tableau
+\RequirePackage{datetime} % date et heure de compilation
+\RequirePackage{pagecolor} % couleur de la page
+\RequirePackage{hyperref} % ref. url etc... en dernier !
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Paramètres                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{ym_noir}{HTML}{121212}
+\definecolor{ym_blanc}{HTML}{DDDDDD}
+\definecolor{ym_bleu}{HTML}{003763}
+\definecolor{ym_bleuc}{HTML}{3898FF}
+\definecolor{ym_jaune}{HTML}{DAA21C}
+\definecolor{ym_vert}{HTML}{10AA10}
+\definecolor{ym_violet}{HTML}{AA10AA}
+\definecolor{ym_rouge}{HTML}{AA1010}
+
+\setcounter{page}{1}
+\setcounter{part}{0}
+\setcounter{section}{0}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{figure}{0}
+
+\def\varwarning{}
+\def\vartitle{}
+\def\varsubtitle{}
+\def\varauthor{}
+\def\varinstitution{}
+\def\varinstitutionbis{}
+\def\varshortinst{}
+\def\vardate{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                      Options                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\DeclareOption{light}{
+  \colorlet{fg}{black}
+  \colorlet{bg}{white}
+
+  \colorlet{fg_froid}{ym_bleu}
+  \colorlet{bg_froid}{ym_bleuc}
+  \colorlet{fg_chaud}{ym_rouge}
+  \colorlet{bg_chaud}{ym_jaune}
+  \colorlet{fg_neutre}{ym_vert}
+  \colorlet{bg_neutre}{ym_violet}
+}
+
+
+\DeclareOption{dark}{
+   \colorlet{fg}{ym_blanc}
+   \colorlet{bg}{ym_noir}
+   
+   \colorlet{fg_froid}{ym_bleuc}
+   \colorlet{bg_froid}{ym_bleu}
+   \colorlet{fg_chaud}{ym_jaune}
+   \colorlet{bg_chaud}{ym_rouge}
+   \colorlet{fg_neutre}{ym_violet}
+   \colorlet{bg_neutre}{ym_vert}
+   
+   \pagecolor{bg}
+   \color{fg}
+}
+
+\DeclareOption{FR}{
+  \AtBeginDocument{
+    \selectlanguage{french}
+  }
+}
+
+\DeclareOption{EN}{
+  \AtBeginDocument{
+    \selectlanguage{english}
+  }
+}
+
+\DeclareOption{a4paper}{
+  \geometry{a4paper, top=3cm, bottom=3cm, left=3cm, right=3cm, headheight=1cm, headsep=0.5cm}
+  \pagestyle{fancy}
+  \fancyhead[L]{{\footnotesize \vartitle\\\varsubtitle}}
+  \fancyhead[R]{{\footnotesize \varauthor\\\varshortinst}}
+  \fancyfoot[C]{\thepage\ / \pageref{LastPage}}
+  \fancypagestyle{plain}{\fancyhead{}\renewcommand{\headrule}{}}
+
+  \AddToHook{shipout/background}{%
+  \put (1.3cm, -0.3\paperheight){\rotatebox[origin=c]{90}{{\large \normalfont \textbf{\textcolor{red}{\varwarning}}}}}}
+
+  \theoremstyle{plain}
+  \newtheorem{propriete}{Propriété}
+  \newtheorem{theoreme}{Théorème}
+  \newtheorem{theorem}{Theorem}
+  \newtheorem{postulat}{Postulat}
+  \newtheorem{lemme}{Lemme}
+  \newtheorem*{note}{N-B}
+
+  \theoremstyle{definition}
+  \newtheorem{definition}{Définition}
+  \newtheorem{definition-en}{Definition}
+  \newtheorem{exemple}{Exemple}
+  \newtheorem{example}{Example}
+
+
+  \theoremstyle{remark}
+  \newtheorem*{remarque}{Remarque}
+  \newtheorem*{remark}{Remark}
+
+  \title{\vartitle\\\varsubtitle}
+  \author{\varauthor\\\varinstitution\\\varinstitutionbis}
+  \date{\vardate}
+
+  \hypersetup{hidelinks, unicode}
+  \AtEndDocument{
+    \label{LastPage}
+  }
+}
+
+\DeclareOption{Bib-siam}{
+  \citestyle{abbrv}
+  \bibliographystyle{siam}
+}
+
+\DeclareOption{Bib-yii}{
+  \citestyle{abbrv}
+  \bibliographystyle{yii}
+}
+
+\DeclareOption{Bib-aasjournal}{
+  \citestyle{aasjournal}
+  \bibliographystyle{aasjournal}
+}
+
+\DeclareOption{beamer}{
+  \setbeamercolor{structure}{fg=ym_bleu}
+  \setbeamertemplate{page number in head/foot}[framenumber]
+  \setbeamertemplate{caption}[numbered]
+  \beamertemplatenavigationsymbolsempty
+
+  \title{\vartitle}
+  \subtitle{\varsubtitle}
+  \author{\varauthor}
+  \institute[\varshortinst]{\varinstitution\\\varinstitutionbis}
+
+  \date{\vardate}
+}
+
+\ExecuteOptions{EN}
+\ExecuteOptions{light}
+
+\ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Paramètres                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength\parindent{0cm} % pas d'indentation des paragraphes
+\renewcommand{\oiint}{\varoiint} % intégrales
+
+\rmfamily
+\DeclareFontShape{T1}{lmr}{b}{sc}{<->ssub*cmr/bx/sc}{}
+\DeclareFontShape{T1}{lmr}{bx}{sc}{<->ssub*cmr/bx/sc}{}
+\DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub*cmr/m/scit}{}
+
+\numberwithin{equation}{section}
+\lstset{frame=single, numbers=left, showstringspaces=false, basicstyle=\footnotesize\ttfamily, breaklines=true, commentstyle=\color{ym_bleu}, keywordstyle=\color{ym_jaune}, stringstyle=\color{ym_vert}, extendedchars=true, literate={à}{{a}}1 {â}{{a}}1 {é}{{e}}1 {è}{{e}}1 {ê}{{e}}1 {ë}{{e}}1 {ï}{{i}}1 {û}{u}1 {ù}{u}1 {î}{i}1 {À}{{A}}1 {Â}{{A}}1 {É}{{E}}1 {È}{{E}}1 {Ê}{{E}}1 {Ë}{{E}}1 {Ï}{{I}}1 {Û}{U}1 {Ù}{U}1 {Î}{I}1}
+
+\usetikzlibrary{babel}
+\usetikzlibrary{decorations.pathmorphing, decorations.markings}
+\tikzset{gluon/.style={thick, decorate, decoration={coil, segment length=4pt}}}
+\tikzset{boson/.style={thick, decorate, decoration={coil,aspect=0}}}
+\tikzset{higgs/.style={thick, dashed}}
+\tikzset{fermion/.style={thick, postaction={decorate}, decoration={markings,mark=at position 0.55 with {\arrow{latex}}}}}
+\tikzset{antifermion/.style={thick, postaction={decorate}, decoration={markings,mark=at position 0.55 with {\arrow{latex reversed}}}}}
+
+% \hypersetup{unicode=false}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     Commandes                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% basdepage
+\newcommand\basdepage[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+
+% blackboard
+\newcommand{\ens}[1]{\mathbf{#1}}
+\newcommand{\esp}[1]{\mathcal{#1}}
+\newcommand{\fk}[1]{\mathfrak{#1}}
+\newcommand{\mat}[1]{\mathcal{#1}} % equiv \esp
+\newcommand{\N}{\ens{N}}
+\newcommand{\Z}{\ens{Z}}
+\newcommand{\D}{\ens{D}}
+\newcommand{\Q}{\ens{Q}}
+\newcommand{\R}{\ens{R}}
+\newcommand{\C}{\ens{C}}
+\newcommand{\K}{\ens{K}}
+\newcommand{\etoile}{^{\displaystyle \ast}}
+\newcommand{\adj}{^{\dagger}}
+\newcommand{\transp}{^{\mathrm{T}}}
+\newcommand{\std}{\text{°}}
+\newcommand{\odeg}{\text{°}}
+\newcommand{\fonc}[2]{\left\langle {#1},\,{#2}\right\rangle}
+\newcommand{\sfonc}[2]{\langle {#1},\,{#2}\rangle}
+
+% opérateurs
+\DeclareMathOperator{\pgcd}{pgcd}
+\DeclareMathOperator{\Vect}{Vect}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Image}{Im}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\lap}{\laplacian}
+\DeclareMathOperator{\vlap}{\vect{\nabla}^2}
+\DeclareMathOperator{\ham}{\mathcal H}
+\DeclareMathOperator{\lag}{\mathcal L}
+\DeclareMathOperator{\mom}{\mathcal M}
+\DeclareMathOperator{\lang}{\mathscr L}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\p}{\mathbb P}
+\DeclareMathOperator{\arctandeux}{arctan2}
+\DeclareMathOperator{\dal}{\square}
+\DeclareMathOperator{\TF}{TF}
+\DeclareMathOperator{\FT}{FT}
+\DeclareMathOperator{\VP}{VP}
+
+\newcommand{\vect}[1]{\va*{#1}}
+\newcommand{\rot}{\curl}
+
+\newcommand{\unite}[1]{\mathrm{\ #1}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\im}{\mathrm{i}}
+\newcommand{\jm}{\mathrm{j}}
+\newcommand{\E}[1]{\times 10^{#1}}
+\newcommand{\cqfd}{\hspace*{0pt} \hfill $\square$}
+\newcommand{\NA}{\mathcal{N}_\mathrm{A}}
+\newcommand{\kB}{k_\mathrm{B}}
+\newcommand{\muB}{\mu_\mathrm{B}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\ul}{\underline}
+\newcommand{\ol}{\overline}
+\newcommand{\mathmu}{\text{\normalfont{\textmu}}}
+\newcommand{\mathomega}{\text{\normalfont{\textomega}}}
+\newcommand{\mathOmega}{\text{\normalfont{\textOmega}}}
+\newcommand{\mathalpha}{\text{\normalfont{\textalpha}}}
+\newcommand{\mathbeta}{\text{\normalfont{\textbeta}}}
+\newcommand{\mathgamma}{\text{\normalfont{\textgamma}}}
+\newcommand{\mathtau}{\text{\normalfont{\texttau}}}
+\newcommand{\mathnu}{\text{\normalfont{\textnu}}}
+\newcommand{\mathsigma}{\text{\normalfont{\textsigma}}}
+\newcommand{\act}{\mathcal S}
+\newcommand{\eqdef}{\overset{\mathrm{def}}{=}}
+\newcommand{\cste}{\mathrm{cste}}
+\newcommand{\cst}{\mathrm{cst}}
+\newcommand{\moy}[1]{\left\langle{#1}\right\rangle}
+\newcommand{\smoy}[1]{\langle{#1}\rangle}
+\newcommand{\ope}[1]{\hat{#1}}
+\newcommand{\opevect}[1]{\hat{\vb{#1}}}
+\newcommand{\sol}{\odot}
+\newcommand{\ter}{\oplus}
+\newcommand{\uma}{\mathrm{u}}
+\DeclareDocumentCommand\atom{m g g g}{
+  \IfNoValueTF{#2}{\ce{#1}}{
+    \IfNoValueTF{#3}{\ce{^{\text{$#2$}}{#1}}}{
+      \IfNoValueTF{#4}{\ce{^{\text{$#2$}}_{\text{$#3$}}{#1}}}{
+        \ce{^{\text{$#2$}}_{\text{$#3$}}{#1}_{\text{$#4$}}}
+      }
+    }
+  }
+}
+\DeclareDocumentCommand\underbraceset{m g}{
+  \IfNoValueTF{#2}{\underbrace{#1}}{
+    \underset{#1}{\underbrace{#2}}
+  }
+}
+% vecteurs unitaires
+\newcommand{\ux}{\vu{u}_x}
+\newcommand{\uy}{\vu{u}_y}
+\newcommand{\uz}{\vu{u}_z}
+\newcommand{\ur}{\vu{u}_r}
+\newcommand{\un}{\vu{u}_n}
+\newcommand{\ut}{\vu{u}_t}
+\newcommand{\urho}{\vu{u}_\rho}
+\newcommand{\utheta}{\vu{u}_\theta}
+\newcommand{\uvartheta}{\vu{u}_\vartheta}
+\newcommand{\uphi}{\vu{u}_\phi}
+\newcommand{\uvarphi}{\vu{u}_\varphi}
+
+\newcommand{\ex}{\vu{e}_x}
+\newcommand{\ey}{\vu{e}_y}
+\newcommand{\ez}{\vu{e}_z}
+\newcommand{\er}{\vu{e}_r}
+\newcommand{\en}{\vu{e}_n}
+\newcommand{\et}{\vu{e}_t}
+\newcommand{\erho}{\vu{e}_\rho}
+\newcommand{\etheta}{\vu{e}_\theta}
+\newcommand{\evartheta}{\vu{e}_\vartheta}
+\newcommand{\ephi}{\vu{e}_\phi}
+\newcommand{\evarphi}{\vu{e}_\varphi}
+
+% d, déron, etc.
+\newcommand{\ds}{\deh{s}}
+\newcommand{\dx}{\deh{x}}
+\newcommand{\dy}{\deh{y}}
+\newcommand{\dz}{\deh{z}}
+\newcommand{\dt}{\deh{t}}
+\newcommand{\dr}{\deh{r}}
+\newcommand{\drho}{\deh{\rho}}
+\newcommand{\dtheta}{\deh{\theta}}
+\newcommand{\dvartheta}{\deh{\vartheta}}
+\newcommand{\dphi}{\deh{\phi}}
+\newcommand{\dvarphi}{\deh{\varphi}}
+\newcommand{\deh}{\dd}
+\newcommand{\deron}{\partial}
+\newcommand{\ddr}{\dd[3]{\vect r}}
+\newcommand{\ddp}{\dd[3]{\vect p}}
+\newcommand{\ddk}{\dd[3]{\vect k}}
+\newcommand{\Var}[1]{\Delta {#1}} % TODO : ESPACE CORRECT
+
+\def\diffD{\mathrm{D}}
+\DeclareDocumentCommand\Differential{ o g d() }{ % Differential 'd'
+	% o: optional n for nth differential
+	% g: optional argument for readability and to control spacing
+	% d: long-form as in d(cos x)
+	\IfNoValueTF{#2}{
+		\IfNoValueTF{#3}
+			{\diffD\IfNoValueTF{#1}{}{^{#1}}}
+			{\mathinner{\diffD\IfNoValueTF{#1}{}{^{#1}}\argopen(#3\argclose)}}
+		}
+		{\mathinner{\diffD\IfNoValueTF{#1}{}{^{#1}}#2} \IfNoValueTF{#3}{}{(#3)}}
+	}
+\DeclareDocumentCommand\Deh{}{\Differential} % Shorthand for \differential
+\DeclareDocumentCommand\Variation{ o g d() }{ % Functional variation
+	% o: optional n for nth differential
+	% g: optional argument for readability and to control spacing
+	% d: long-form as in D(F(g))
+	\IfNoValueTF{#2}{
+		\IfNoValueTF{#3}
+			{\Delta \IfNoValueTF{#1}{}{^{#1}}}
+			{\mathinner{\Delta \IfNoValueTF{#1}{}{^{#1}}\argopen(#3\argclose)}}
+		}
+		{\mathinner{\Delta \IfNoValueTF{#1}{}{^{#1}}#2} \IfNoValueTF{#3}{}{(#3)}}
+	}
+\DeclareDocumentCommand\Var{}{\Variation} % Shorthand for \differential
+
+
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\etal}{\textit{et al}}
+\newcommand{\eg}{\textit{e.g.}}
+
+\newenvironment{question}[1]{\textbf{Q\,#1.}}{}
+\newenvironment{systeme}{\left\{\begin{array}{ll}}{\end{array}\right.} % Attention, l'accolade est bien fermée ici !
+
+\newcommand{\setWarning}[1]{\def\varwarning{{#1}}}
+\newcommand{\setTitle}[1]{\def\vartitle{{#1}}}
+\newcommand{\setSubTitle}[1]{\def\varsubtitle{{#1}}}
+\newcommand{\setAuthor}[1]{\def\varauthor{{#1}}}
+\newcommand{\setInstitution}[1]{\def\varinstitution{{#1}}}
+\DeclareDocumentCommand\setInstitution{mo}{\def\varinstitution{{#1}}\IfValueT{#2}{\def\varinstitutionbis{{#2}}}}
+\newcommand{\setShortInst}[1]{\def\varshortinst{{#1}}}
+\newcommand{\setDate}[1]{\def\vardate{{#1}}}
+
+\newcommand{\getWarning}{\varwarning}
+\newcommand{\getTitle}{\vartitle}
+\newcommand{\getSubTitle}{\varsubtitle}
+\newcommand{\getAuthor}{\varauthor}
+\newcommand{\getInstitution}{\varinstitution}
+\newcommand{\getInstitutionbis}{\varinstitutionbis}
+\newcommand{\getShortInst}{\varshortinst}
+\newcommand{\getDate}{\vardate}
+
+\newcommand{\setPage}[1]{\setcounter{page}{{#1}}}
+\newcommand{\setPart}[1]{\setcounter{part}{{#1}}}
+\newcommand{\setSection}[1]{\setcounter{section}{{#1}}}
+\newcommand{\setSubSection}[1]{\setcounter{subsection}{{#1}}}
+\newcommand{\setSubSubSection}[1]{\setcounter{subsubsection}{{#1}}}
+\newcommand{\setFigure}[1]{\setcounter{figure}{{#1}}}
+
+
+\newcommand{\shorttitle}{
+    \maketitle
+}
+
+\DeclareDocumentCommand\longtitle{s o m}{
+  \thispagestyle{empty}
+  \IfBooleanTF{#1}{
+    \vspace*{5cm}
+  }
+  {
+    \includegraphics[height=2cm]{{#3}}
+    \vspace*{3cm}
+  }
+  \begin{spacing}{1.7}
+    \begin{center}
+    {\huge\noindent\vartitle\\\varsubtitle}
+    
+    \vspace*{1cm}
+    {\large\varauthor\\\varinstitution\\\varinstitutionbis}
+    
+    \vspace*{1cm}
+    {\large\vardate}
+    \end{center}
+  \end{spacing}
+  \IfValueT{#2}{
+    \vfill
+    \begin{center}
+      {#2}
+    \end{center}
+    \vfill
+  }
+  \newpage
+  \tableofcontents
+  \newpage
+}
+
+
+\endinput
