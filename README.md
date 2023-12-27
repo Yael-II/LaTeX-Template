@@ -25,7 +25,7 @@ Some command automatically adjust size with elements insed (as with `\left` and 
 \setSubTitle{Ipsum}
 \setAuthor{O.-W. Kenobi}
 \setInstitution{Coruscant Jedi Academy}[Master of the Jedi High Council]
-\setShortInst{Cor. Jedi Acad., Master of the Jedi H. C.}
+\setShortInst{Cor. Jedi Acad., Jedi H. C.}
 \setDate{22 BBY}
 ```
 `\get[Variable]` can be used to get the variable. It is also possible to set variables `Page`, `Part`, `Section`, `SubSection`, `SubSubSection` and `Figure`.
