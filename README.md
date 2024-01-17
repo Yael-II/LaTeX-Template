@@ -37,7 +37,7 @@ Some command automatically adjust size with elements insed (as with `\left` and 
 - `\N`, `\Z`, `\D`, `\Q`, `\R`, `\C`, `\K`: print corresponding ensemble in bold font (as with `\ens{...}`)
 - `\etoile` (star): print superscript asterisk
 - `\adj` (adjoint): print superscirpt dagger
-- `\transp` (transposition): print superscript roman `T`
+- `\transp` (transposition): print superscript `T` symbol
 - `\std`, `\odeg`: print ° in math mode
 - `\fonc{...}{...}`, `\sfonc{...}{...}` (fonctionnelle, functionnal): print `<..., ...>` as used in distribution theory
 - operators: `\pgcd`, `\Vect`, `\Ker`, `\Image` (Im), `\Sp`, `\lap` (physics `\laplacian` operator), `\vlap` (vectorial laplacian, denoted with a tilde), `\ham` (Hamiltonian), `\lag` (Lagrangian), `\mom` (angular momentum), `\lang` (Langevin), `\card`, `\p` (probability), `\arctandeux` (arctan2), `\dal` (Dalembertian), `\TF` and `\FT` (Transformée de Fourier, Fourier Transform), `\VP`, `\act` (action)
