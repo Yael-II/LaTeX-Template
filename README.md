@@ -2,7 +2,7 @@
 ## [EN] Usage
 ### General Instructions
 - Place the `.sty` file in the working directory or in `.../texmf/tex/latex/yii-v1`
-- To use custom bibliographic style, place `.bst` file in the working directory or in `.../texmf-dist/bibtex/bst/base/`
+- To use custom bibliographic style, place `.bst` file in the working directory or in `.../texmf/bibtex/bst/base/`
 - To use the package, use `\usepackage[options]{yii-v1}`
 
 ### Options
