@@ -4,8 +4,8 @@
 \RequirePackage{natbib} % bibliography
 \RequirePackage[english,french,greek]{babel} % français
 \RequirePackage[T1]{fontenc} % encodage sortie
-\RequirePackage{amsmath} % polices
-\RequirePackage{amssymb} % symboles
+\RequirePackage{amsmath} % maths
+\RequirePackage{amssymb} % symbols
 \RequirePackage{amsthm} % th, prop etc.
 \RequirePackage{xparse} % fonctions
 \RequirePackage{geometry} % correction footnote
@@ -38,7 +38,7 @@
 \RequirePackage{multirow} % case de plusieurs lignes dans un tableau
 \RequirePackage{datetime} % date et heure de compilation
 \RequirePackage{pagecolor} % couleur de la page
-\RequirePackage{tikzducks}
+\RequirePackage{tikzducks} % quark
 \RequirePackage{hyperref} % ref. url etc... en dernier !
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -46,12 +46,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \definecolor{ym_noir}{HTML}{121212}
 \definecolor{ym_blanc}{HTML}{DDDDDD}
-\definecolor{ym_bleu}{HTML}{003763}
-\definecolor{ym_bleuc}{HTML}{3898FF}
+\definecolor{ym_bleu}{HTML}{06518E}
+\definecolor{ym_bleuc}{HTML}{009EDB}
 \definecolor{ym_rouge}{HTML}{ED1C24}
-\definecolor{ym_jaune}{HTML}{DAA21C}
-\definecolor{ym_vert}{HTML}{10AA10}
-\definecolor{ym_violet}{HTML}{AA10AA}
+\definecolor{ym_jaune}{HTML}{E8BD0F}
+\definecolor{ym_vert}{HTML}{3B795E}
+\definecolor{ym_violet}{HTML}{C95BCF}
 
 \setcounter{page}{1}
 \setcounter{part}{0}
@@ -130,6 +130,7 @@
 
 
 \DeclareOption{a4paper}{
+
   \geometry{a4paper, top=3cm, bottom=3cm, left=3cm, right=3cm, headheight=1cm, headsep=0.5cm}
   \pagestyle{fancy}
   \fancyhead[L]{{\footnotesize \vartitle\\\varsubtitle}}
@@ -164,9 +165,8 @@
   \date{\vardate}
 
   \hypersetup{hidelinks, unicode}
-  \AtEndDocument{
-    \label{LastPage}
-  }
+
+  \AddToHook{shipout/lastpage}{\label{LastPage}} 
 }
 
 \DeclareOption{Bib-siam}{
@@ -214,6 +214,9 @@
 \DeclareOption{astro}{
   \def\@G{G}
   \def\@vect{\vb}
+  \def\@u{\vb u_}
+  \def\@e{\vb e_}
+  \def\@vu{\vu}
 }
 
 \DeclareOption{vb}{
@@ -263,12 +266,12 @@
 \DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub*cmr/m/scit}{}
 
 \numberwithin{equation}{section}
-\lstset{frame=single, numbers=left, showstringspaces=false, basicstyle=\footnotesize\ttfamily, breaklines=true, commentstyle=\color{ym_bleu}, keywordstyle=\color{ym_jaune}, stringstyle=\color{ym_vert}, extendedchars=true, literate={à}{{a}}1 {â}{{a}}1 {é}{{e}}1 {è}{{e}}1 {ê}{{e}}1 {ë}{{e}}1 {ï}{{i}}1 {û}{u}1 {ù}{u}1 {î}{i}1 {À}{{A}}1 {Â}{{A}}1 {É}{{E}}1 {È}{{E}}1 {Ê}{{E}}1 {Ë}{{E}}1 {Ï}{{I}}1 {Û}{U}1 {Ù}{U}1 {Î}{I}1}
+\lstset{frame=single, numbers=left, showstringspaces=false, basicstyle=\footnotesize\ttfamily, breaklines=true, commentstyle=\color{ym_bleu}, keywordstyle=\color{ym_jaune}, stringstyle=\color{ym_vert}, extendedchars=true, literate={à}{{a}}1 {â}{{a}}1 {é}{{e}}1 {è}{{e}}1 {ê}{{e}}1 {ë}{{e}}1 {ï}{{i}}1 {û}{u}1 {ù}{u}1 {î}{i}1 {À}{{A}}1 {ô}{o}1 {ç}{c}1 {Â}{{A}}1 {É}{{E}}1 {È}{{E}}1 {Ê}{{E}}1 {Ë}{{E}}1 {Ï}{{I}}1 {Û}{U}1 {Ù}{U}1 {Î}{I}1 {Ô}{O}1 {Ç}{C}1 {°}{d}1}
 
 \usetikzlibrary{babel}
 \usetikzlibrary{decorations.pathmorphing, decorations.markings}
 \tikzset{gluon/.style={thick, decorate, decoration={coil, segment length=4pt}}}
-\tikzset{boson/.style={thick, decorate, decoration={coil,aspect=0}}}
+\tikzset{boson/.style={thick, decorate, decoration={snake, segment length=8pt}}}
 \tikzset{higgs/.style={thick, dashed}}
 \tikzset{fermion/.style={thick, postaction={decorate}, decoration={markings,mark=at position 0.55 with {\arrow{latex}}}}}
 \tikzset{antifermion/.style={thick, postaction={decorate}, decoration={markings,mark=at position 0.55 with {\arrow{latex reversed}}}}}
@@ -587,8 +590,9 @@
 \newcommand{\rot}{\curl}
 
 \newcommand{\name}{\@name}
-\newcommand{\unite}[1]{\mathrm{\ #1}}
-\newcommand{\unit}[1]{\unite{\ #1}}
+\newcommand{\unite}[1]{\mathrm{~#1}}
+\newcommand{\unit}[1]{\unite{#1}}
+\newcommand{\range}{\text{--}}
 \newcommand{\e}{\mathrm{e}}
 \newcommand{\im}{\mathrm{i}}
 \newcommand{\jm}{\mathrm{j}}
@@ -709,6 +713,7 @@
 	}
 \DeclareDocumentCommand\Var{}{\Variation} % Shorthand for \differential
 
+\newcommand{\cfill}{\hspace*{0cm}\hfill\hspace*{0cm}}
 
 \newcommand{\ie}{\textit{i.e.}}
 \newcommand{\etal}{\textit{et al}}
