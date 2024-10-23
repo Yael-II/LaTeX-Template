@@ -76,7 +76,7 @@
 \def\yii@name{\text}
 \def\yii@eqdef{\equiv}
 \def\yii@vect{\vb}
-\def\yii@varepsilon{\varepsilon}
+\def\yii@epsilon{\epsilon}
 
 \newif\ifFR
 \newif\ifpaper
@@ -176,8 +176,8 @@
      \setlength\parindent{0cm} % No paragraph indent
 }
 
-\DeclareOption{novarepsilon}{
-     \def\yii@varepsilon{\epsilon}
+\DeclareOption{onlyvarepsilon}{
+     \def\yii@epsilon{\varepsilon}
 }
 
 \DeclareOption{bib-siam}{
@@ -283,7 +283,7 @@
 \DeclareMathSymbol{\Tau}{7}{yiilm}{"54}
 \DeclareMathSymbol{\Chi}{7}{yiilm}{"58}
 
-\let\varepsilon\yii@varepsilon
+\let\epsilon\yii@epsilon
 
 \let\Varepsilon\Epsilon
 \let\Vartheta\Theta
