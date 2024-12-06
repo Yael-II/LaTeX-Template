@@ -1,0 +1,920 @@
+\ProvidesPackage{yii-v1}[2024-01-01]
+
+\RequirePackage[utf8]{inputenc} % encodage entree
+\RequirePackage{natbib} % bibliography
+\RequirePackage[english,french,greek]{babel} % français
+\RequirePackage[T1]{fontenc} % encodage sortie
+\RequirePackage{amsmath} % maths
+\RequirePackage{amssymb} % symbols
+\RequirePackage{amsthm} % th, prop etc.
+\RequirePackage{xparse} % fonctions
+\RequirePackage{geometry} % correction footnote
+\RequirePackage{fancyhdr} % entêtes et pied-de-page
+\RequirePackage{appendix} % annexes
+\RequirePackage{graphicx}  % images
+\RequirePackage{xcolor} % couleur
+\RequirePackage{mathrsfs} % police maths \mathscr
+\RequirePackage{array} % tableau
+\RequirePackage{lmodern} % police
+\RequirePackage{slantsc} % correction police
+\RequirePackage{fix-cm} % correction CM
+\RequirePackage{chemfig} % formules chimiques
+\RequirePackage[version=4]{mhchem}
+\RequirePackage{listings} % code
+\RequirePackage{lipsum} % lorem ipsum
+\RequirePackage{tikz} % schem
+\RequirePackage[RPvoltages, european, straight voltages, cuteinductors]{circuitikz} % circuits
+\RequirePackage{tikz-3dplot} % plot 3D
+\RequirePackage{esint} % intégrales
+\RequirePackage{textgreek} % lettres grecques en roman
+\RequirePackage{setspace} %  interlignes
+\RequirePackage{paracol} % plusieurs colones
+\RequirePackage[bottom]{footmisc} % correction footnote
+\RequirePackage{lscape} % format paysage pour une page : environnement landscape (remplacer par le package pdflscape si besoin)
+\RequirePackage[arrowdel]{physics} % Un package essentiel
+\RequirePackage{afterpage} % pour intégrer le \clearpage dès la fin de page
+\RequirePackage{caption}% figure...
+\RequirePackage{subcaption}% sous-figures...
+\RequirePackage{multirow} % case de plusieurs lignes dans un tableau
+\RequirePackage{datetime} % date et heure de compilation
+\RequirePackage{pagecolor} % couleur de la page
+\RequirePackage{tikzducks} % quark
+\RequirePackage{hyperref} % ref. url etc... en dernier !
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Paramètres                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{ym_noir}{HTML}{121212}
+\definecolor{ym_blanc}{HTML}{DDDDDD}
+\definecolor{ym_bleu}{HTML}{06518E}
+\definecolor{ym_bleuc}{HTML}{009EDB}
+\definecolor{ym_rouge}{HTML}{ED1C24}
+\definecolor{ym_jaune}{HTML}{E8BD0F}
+\definecolor{ym_vert}{HTML}{3B795E}
+\definecolor{ym_violet}{HTML}{C95BCF}
+
+\colorlet{ym_black}{ym_noir}
+\colorlet{ym_white}{ym_blanc}
+\colorlet{ym_blue}{ym_bleu}
+\colorlet{ym_lblue}{ym_bleuc}
+\colorlet{ym_red}{ym_rouge}
+\colorlet{ym_yellow}{ym_jaune}
+\colorlet{ym_green}{ym_vert}
+\colorlet{ym_purple}{ym_violet}
+
+\colorlet{ym_orange}{ym_yellow!60!ym_red}
+
+\setcounter{page}{1}
+\setcounter{part}{0}
+\setcounter{section}{0}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{figure}{0}
+
+\def\varwarning{}
+\def\vartitle{}
+\def\varsubtitle{}
+\def\varauthor{}
+\def\varinstitution{}
+\def\varinstitutionbis{}
+\def\varshortinst{}
+\def\vardate{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                      Options                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newif\ifFR
+\newif\ifpaper
+
+\DeclareOption{light}{
+  \colorlet{fg}{black}
+  \colorlet{bg}{white}
+
+  \colorlet{fg_froid}{ym_bleu}
+  \colorlet{bg_froid}{ym_bleuc}
+  \colorlet{fg_chaud}{ym_rouge}
+  \colorlet{bg_chaud}{ym_jaune}
+  \colorlet{fg_neutre}{ym_vert}
+  \colorlet{bg_neutre}{ym_violet}
+}
+
+
+\DeclareOption{dark}{
+   \colorlet{fg}{ym_blanc}
+   \colorlet{bg}{ym_noir}
+
+   \colorlet{fg_froid}{ym_bleuc}
+   \colorlet{bg_froid}{ym_bleu}
+   \colorlet{fg_chaud}{ym_jaune}
+   \colorlet{bg_chaud}{ym_rouge}
+   \colorlet{fg_neutre}{ym_violet}
+   \colorlet{bg_neutre}{ym_vert}
+   
+   \pagecolor{bg}
+   \color{fg}
+}
+
+\DeclareOption{EN}{
+  \FRfalse
+  \AtBeginDocument{
+    \selectlanguage{english}
+  }
+  \def\@eqdef{\equiv}
+  \def\@name{\text}
+  \def\@cste{\mathrm{cst}}
+  \def\@TF{FT}
+  \def\@VP{PV}
+}
+
+\DeclareOption{FR}{
+  \FRtrue
+  \AtBeginDocument{
+    \selectlanguage{french}
+  }
+  \mathcode`\.="013B % 1.23 --> 1,23
+  \def\@eqdef{\overset{\mathrm{def}}{=}}
+  \def\@name{\textsc}
+  \def\@cste{\mathrm{cste}}
+  \def\@TF{TF}
+  \def\@VP{VP}
+  \captionsetup{labelsep=endash}
+}
+
+
+\DeclareOption{a4paper}{
+  \papertrue
+  \geometry{a4paper, top=3cm, bottom=3cm, left=3cm, right=3cm, headheight=1cm, headsep=0.5cm}
+  \pagestyle{fancy}
+  \fancyhead[L]{{\footnotesize \vartitle\\\varsubtitle}}
+  \fancyhead[R]{{\footnotesize \varauthor\\\varshortinst}}
+  \fancyfoot[C]{\thepage\ / \pageref{LastPage}}
+  \fancypagestyle{plain}{\fancyhead{}\renewcommand{\headrule}{}}
+
+  \AddToHook{shipout/background}{%
+  \put (1.3cm, -0.3\paperheight){\rotatebox[origin=c]{90}{{\large \normalfont \textbf{\textcolor{red}{\varwarning}}}}}}
+
+  \theoremstyle{plain}
+  \newtheorem{propriete}{Propriété}
+  \newtheorem{theoreme}{Théorème}
+  \newtheorem{theorem}{Theorem}
+  \newtheorem{postulat}{Postulat}
+  \newtheorem{lemme}{Lemme}
+  \newtheorem*{note}{N-B}
+
+  \theoremstyle{definition}
+  \newtheorem{definition}{Définition}
+  \newtheorem{definition-en}{Definition}
+  \newtheorem{exemple}{Exemple}
+  \newtheorem{example}{Example}
+
+
+  \theoremstyle{remark}
+  \newtheorem*{remarque}{Remarque}
+  \newtheorem*{remark}{Remark}
+
+  \title{\vartitle\\\varsubtitle}
+  \author{\varauthor\\\varinstitution\\\varinstitutionbis}
+  \date{\vardate}
+
+  \hypersetup{hidelinks, unicode}
+
+  \AddToHook{shipout/lastpage}{\label{LastPage}} 
+}
+
+\DeclareOption{Bib-siam}{
+  \citestyle{abbrv}
+  \bibliographystyle{siam}
+}
+
+\DeclareOption{Bib-yii}{
+  \citestyle{abbrv}
+  \bibliographystyle{yii}
+}
+
+\DeclareOption{Bib-aasjournal}{
+  \citestyle{aasjournal}
+  \bibliographystyle{aasjournal}
+}
+
+\DeclareOption{beamer}{
+  \paperfalse
+  \setbeamercolor{structure}{fg=ym_bleu}
+  \setbeamertemplate{page number in head/foot}[framenumber]
+  \setbeamertemplate{caption}[numbered]
+  \beamertemplatenavigationsymbolsempty
+
+  \title{\vartitle}
+  \subtitle{\varsubtitle}
+  \author{\varauthor}
+  \institute[\varshortinst]{\varinstitution\\\varinstitutionbis}
+
+  \date{\vardate}
+}
+
+\DeclareOption{part}{
+  \numberwithin{section}{part}
+  \renewcommand{\numberline}[1]{#1~}
+}
+
+\DeclareOption{default}{
+  \def\@G{\mathcal{G}}
+  \def\@vect{\va*}
+  \def\@u{\vu u_}
+  \def\@e{\vu e_}
+  \def\@vu{\vu}
+}
+
+\DeclareOption{astro}{
+  \def\@G{G}
+  \def\@vect{\vb}
+  \def\@u{\vu u_}
+  \def\@e{\vu e_}
+  \def\@vu{\vu}
+}
+
+\DeclareOption{vb}{
+  \def\@vect{\vb}
+}
+
+\DeclareOption{vu-u}{
+  \def\@u{\vu u_}
+  \def\@e{\vu u_}
+  \def\@vu{\vu u_}
+}
+
+\DeclareOption{vu-e}{
+  \def\@u{\vu e_}
+  \def\@e{\vu e_}
+  \def\@vu{\vu e_}
+}
+
+\DeclareOption{vu}{
+  \def\@u{\vu}
+  \def\@e{\vu}
+  \def\@vu{\vu}
+}
+
+\DeclareOption{nosc}{
+  \renewcommand{\textsc}{\text}
+  \def\@name{\text}
+}
+
+\ExecuteOptions{EN}
+\ExecuteOptions{light}
+\ExecuteOptions{default}
+
+
+\ProcessOptions\relax
+
+\ifFR
+  \ifpaper
+    \renewcommand{\labelitemi}{---}
+    \renewcommand{\labelitemii}{---}
+    \renewcommand{\labelitemiii}{---}
+    \renewcommand{\labelitemiv}{---}
+  \fi
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Paramètres                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength\parindent{0cm} % pas d'indentation des paragraphes
+\renewcommand{\oiint}{\varoiint} % intégrales
+
+\rmfamily
+\DeclareFontShape{T1}{lmr}{b}{sc}{<->ssub*cmr/bx/sc}{}
+\DeclareFontShape{T1}{lmr}{bx}{sc}{<->ssub*cmr/bx/sc}{}
+\DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub*cmr/m/scit}{}
+
+\numberwithin{equation}{section}
+\lstset{frame=single, numbers=left, showstringspaces=false, basicstyle=\footnotesize\ttfamily, breaklines=true, commentstyle=\color{ym_bleu}, keywordstyle=\color{ym_jaune}, stringstyle=\color{ym_vert}, extendedchars=true, literate={à}{{a}}1 {â}{{a}}1 {é}{{e}}1 {è}{{e}}1 {ê}{{e}}1 {ë}{{e}}1 {ï}{{i}}1 {û}{u}1 {ù}{u}1 {î}{i}1 {À}{{A}}1 {ô}{o}1 {ç}{c}1 {Â}{{A}}1 {É}{{E}}1 {È}{{E}}1 {Ê}{{E}}1 {Ë}{{E}}1 {Ï}{{I}}1 {Û}{U}1 {Ù}{U}1 {Î}{I}1 {Ô}{O}1 {Ç}{C}1 {°}{d}1}
+
+\usetikzlibrary{babel}
+\usetikzlibrary{decorations.pathmorphing, decorations.markings}
+\tikzset{gluon/.style={thick, decorate, decoration={coil, segment length=4pt}}}
+\tikzset{boson/.style={thick, decorate, decoration={snake, segment length=8pt}}}
+\tikzset{higgs/.style={thick, dashed}}
+\tikzset{fermion/.style={thick, postaction={decorate}, decoration={markings,mark=at position 0.55 with {\arrow{latex}}}}}
+\tikzset{antifermion/.style={thick, postaction={decorate}, decoration={markings,mark=at position 0.55 with {\arrow{latex reversed}}}}}
+
+% \hypersetup{unicode=false}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                  Greek letters                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Missing capital greek letters
+\newcommand{\Alpha}{A}
+\newcommand{\Beta}{B}
+\newcommand{\Epsilon}{E}
+\newcommand{\Varpsilon}{\Epsilon}
+\newcommand{\Zeta}{Z}
+\newcommand{\Eta}{H}
+\newcommand{\Vartheta}{\Theta}
+\newcommand{\Iota}{I}
+\newcommand{\Kappa}{K}
+\newcommand{\Mu}{M}
+\newcommand{\Nu}{N}
+\newcommand{\Omicron}{O}
+\newcommand{\Varpi}{\Pi}
+\newcommand{\Rho}{R}
+\newcommand{\Varrho}{\Rho}
+\newcommand{\Tau}{T}
+\newcommand{\Varphi}{\Phi}
+\newcommand{\Chi}{X}
+% Math roman greek letters
+\newcommand{\mathalpha}{\text{\normalfont{\textalpha}}}
+\newcommand{\mathbeta}{\text{\normalfont{\textbeta}}}
+\newcommand{\mathgamma}{\text{\normalfont{\textgamma}}}
+\newcommand{\mathdelta}{\text{\normalfont{\textdelta}}}
+\newcommand{\mathepsilon}{\text{\normalfont{\textepsilon}}}
+\newcommand{\mathvarepsilon}{\text{\normalfont{\textepsilon}}}
+\newcommand{\mathzeta}{\text{\normalfont{\textzeta}}}
+\newcommand{\matheta}{\text{\normalfont{\texteta}}}
+\newcommand{\maththeta}{\text{\normalfont{\texttheta}}}
+\newcommand{\mathvartheta}{\text{\normalfont{\texttheta}}}
+\newcommand{\mathiota}{\text{\normalfont{\textiota}}}
+\newcommand{\mathkappa}{\text{\normalfont{\textkappa}}}
+\newcommand{\mathlambda}{\text{\normalfont{\textlambda}}}
+\newcommand{\mathmu}{\text{\normalfont{\textmu}}}
+\newcommand{\mathnu}{\text{\normalfont{\textnu}}}
+\newcommand{\mathomicron}{\text{\normalfont{\textomicron}}}
+\newcommand{\mathpi}{\text{\normalfont{\textpi}}}
+\newcommand{\mathvarpi}{\text{\normalfont{\textpi}}}
+\newcommand{\mathrho}{\text{\normalfont{\textrho}}}
+\newcommand{\mathvarrho}{\text{\normalfont{\textrho}}}
+\newcommand{\mathsigma}{\text{\normalfont{\textsigma}}}
+\newcommand{\mathtau}{\text{\normalfont{\texttau}}}
+\newcommand{\mathupsilon}{\text{\normalfont{\textupsilon}}}
+\newcommand{\mathphi}{\text{\normalfont{\textphi}}}
+\newcommand{\mathvarphi}{\text{\normalfont{\textphi}}}
+\newcommand{\mathchi}{\text{\normalfont{\textchi}}}
+\newcommand{\mathpsi}{\text{\normalfont{\textpsi}}}
+\newcommand{\mathomega}{\text{\normalfont{\textomega}}}
+% Math roman capital greek letters
+\newcommand{\mathAlpha}{\text{\normalfont{\textAlpha}}}
+\newcommand{\mathBeta}{\text{\normalfont{\textBeta}}}
+\newcommand{\mathGamma}{\text{\normalfont{\textGamma}}}
+\newcommand{\mathDelta}{\text{\normalfont{\textDelta}}}
+\newcommand{\mathEpsilon}{\text{\normalfont{\textEpsilon}}}
+\newcommand{\mathVarepsilon}{\text{\normalfont{\textEpsilon}}}
+\newcommand{\mathZeta}{\text{\normalfont{\textZeta}}}
+\newcommand{\mathEta}{\text{\normalfont{\textEta}}}
+\newcommand{\mathTheta}{\text{\normalfont{\textTheta}}}
+\newcommand{\mathVartheta}{\text{\normalfont{\textTheta}}}
+\newcommand{\mathIota}{\text{\normalfont{\textIota}}}
+\newcommand{\mathKappa}{\text{\normalfont{\textKappa}}}
+\newcommand{\mathLambda}{\text{\normalfont{\textLambda}}}
+\newcommand{\mathMu}{\text{\normalfont{\textMu}}}
+\newcommand{\mathNu}{\text{\normalfont{\textNu}}}
+\newcommand{\mathOmicron}{\text{\normalfont{\textOmicron}}}
+\newcommand{\mathPi}{\text{\normalfont{\textPi}}}
+\newcommand{\mathVarpi}{\text{\normalfont{\textPi}}}
+\newcommand{\mathRho}{\text{\normalfont{\textRho}}}
+\newcommand{\mathVarrho}{\text{\normalfont{\textRho}}}
+\newcommand{\mathSigma}{\text{\normalfont{\textSigma}}}
+\newcommand{\mathTau}{\text{\normalfont{\textTau}}}
+\newcommand{\mathUpsilon}{\text{\normalfont{\textUpsilon}}}
+\newcommand{\mathPhi}{\text{\normalfont{\textPhi}}}
+\newcommand{\mathVarphi}{\text{\normalfont{\textPhi}}}
+\newcommand{\mathChi}{\text{\normalfont{\textChi}}}
+\newcommand{\mathPsi}{\text{\normalfont{\textPsi}}}
+\newcommand{\mathOmega}{\text{\normalfont{\textOmega}}}
+% Math bold greek letters
+\newcommand{\boldalpha}{\boldsymbol{\alpha}}
+\newcommand{\boldbeta}{\boldsymbol{\beta}}
+\newcommand{\boldgamma}{\boldsymbol{\gamma}}
+\newcommand{\bolddelta}{\boldsymbol{\delta}}
+\newcommand{\boldepsilon}{\boldsymbol{\epsilon}}
+\newcommand{\boldvarepsilon}{\boldsymbol{\epsilon}}
+\newcommand{\boldzeta}{\boldsymbol{\zeta}}
+\newcommand{\boldeta}{\boldsymbol{\eta}}
+\newcommand{\boldtheta}{\boldsymbol{\theta}}
+\newcommand{\boldvartheta}{\boldsymbol{\theta}}
+\newcommand{\boldiota}{\boldsymbol{\iota}}
+\newcommand{\boldkappa}{\boldsymbol{\kappa}}
+\newcommand{\boldlambda}{\boldsymbol{\lambda}}
+\newcommand{\boldmu}{\boldsymbol{\mu}}
+\newcommand{\boldnu}{\boldsymbol{\nu}}
+\newcommand{\boldomicron}{\boldsymbol{\omicron}}
+\newcommand{\boldpi}{\boldsymbol{\pi}}
+\newcommand{\boldvarpi}{\boldsymbol{\pi}}
+\newcommand{\boldrho}{\boldsymbol{\rho}}
+\newcommand{\boldvarrho}{\boldsymbol{\rho}}
+\newcommand{\boldsigma}{\boldsymbol{\sigma}}
+\newcommand{\boldtau}{\boldsymbol{\tau}}
+\newcommand{\boldupsilon}{\boldsymbol{\upsilon}}
+\newcommand{\boldphi}{\boldsymbol{\phi}}
+\newcommand{\boldvarphi}{\boldsymbol{\phi}}
+\newcommand{\boldchi}{\boldsymbol{\chi}}
+\newcommand{\boldpsi}{\boldsymbol{\psi}}
+\newcommand{\boldomega}{\boldsymbol{\omega}}
+% Math bold capital greek letters
+\newcommand{\boldAlpha}{\boldsymbol{\Alpha}}
+\newcommand{\boldBeta}{\boldsymbol{\Beta}}
+\newcommand{\boldGamma}{\boldsymbol{\Gamma}}
+\newcommand{\boldDelta}{\boldsymbol{\Delta}}
+\newcommand{\boldEpsilon}{\boldsymbol{\Epsilon}}
+\newcommand{\boldVarepsilon}{\boldsymbol{\Epsilon}}
+\newcommand{\boldZeta}{\boldsymbol{\Zeta}}
+\newcommand{\boldEta}{\boldsymbol{\Eta}}
+\newcommand{\boldTheta}{\boldsymbol{\Theta}}
+\newcommand{\boldVartheta}{\boldsymbol{\Theta}}
+\newcommand{\boldIota}{\boldsymbol{\Iota}}
+\newcommand{\boldKappa}{\boldsymbol{\Kappa}}
+\newcommand{\boldLambda}{\boldsymbol{\Lambda}}
+\newcommand{\boldMu}{\boldsymbol{\Mu}}
+\newcommand{\boldNu}{\boldsymbol{\Nu}}
+\newcommand{\boldOmicron}{\boldsymbol{\Omicron}}
+\newcommand{\boldPi}{\boldsymbol{\Pi}}
+\newcommand{\boldVarpi}{\boldsymbol{\Pi}}
+\newcommand{\boldRho}{\boldsymbol{\Rho}}
+\newcommand{\boldVarrho}{\boldsymbol{\Rho}}
+\newcommand{\boldSigma}{\boldsymbol{\Sigma}}
+\newcommand{\boldTau}{\boldsymbol{\Tau}}
+\newcommand{\boldUpsilon}{\boldsymbol{\Upsilon}}
+\newcommand{\boldPhi}{\boldsymbol{\Phi}}
+\newcommand{\boldVarphi}{\boldsymbol{\Phi}}
+\newcommand{\boldChi}{\boldsymbol{\Chi}}
+\newcommand{\boldPsi}{\boldsymbol{\Psi}}
+\newcommand{\boldOmega}{\boldsymbol{\Omega}}
+% Text bold roman greek letters
+\newcommand{\boldtextalpha}{\textbf{\textalpha}}
+\newcommand{\boldtextbeta}{\textbf{\textbeta}}
+\newcommand{\boldtextgamma}{\textbf{\textgamma}}
+\newcommand{\boldtextdelta}{\textbf{\textdelta}}
+\newcommand{\boldtextepsilon}{\textbf{\textepsilon}}
+\newcommand{\boldtextvarepsilon}{\textbf{\textepsilon}}
+\newcommand{\boldtextzeta}{\textbf{\textzeta}}
+\newcommand{\boldtexteta}{\textbf{\texteta}}
+\newcommand{\boldtexttheta}{\textbf{\texttheta}}
+\newcommand{\boldtextvartheta}{\textbf{\texttheta}}
+\newcommand{\boldtextiota}{\textbf{\textiota}}
+\newcommand{\boldtextkappa}{\textbf{\textkappa}}
+\newcommand{\boldtextlambda}{\textbf{\textlambda}}
+\newcommand{\boldtextmu}{\textbf{\textmu}}
+\newcommand{\boldtextnu}{\textbf{\textnu}}
+\newcommand{\boldtextomicron}{\textbf{\textomicron}}
+\newcommand{\boldtextpi}{\textbf{\textpi}}
+\newcommand{\boldtextvarpi}{\textbf{\textpi}}
+\newcommand{\boldtextrho}{\textbf{\textrho}}
+\newcommand{\boldtextvarrho}{\textbf{\textrho}}
+\newcommand{\boldtextsigma}{\textbf{\textsigma}}
+\newcommand{\boldtexttau}{\textbf{\texttau}}
+\newcommand{\boldtextupsilon}{\textbf{\textupsilon}}
+\newcommand{\boldtextphi}{\textbf{\textphi}}
+\newcommand{\boldtextvarphi}{\textbf{\textphi}}
+\newcommand{\boldtextchi}{\textbf{\textchi}}
+\newcommand{\boldtextpsi}{\textbf{\textpsi}}
+\newcommand{\boldtextomega}{\textbf{\textomega}}
+% Text bold roman capital greek letters
+\newcommand{\boldtextAlpha}{\textbf{\textAlpha}}
+\newcommand{\boldtextBeta}{\textbf{\textBeta}}
+\newcommand{\boldtextGamma}{\textbf{\textGamma}}
+\newcommand{\boldtextDelta}{\textbf{\textDelta}}
+\newcommand{\boldtextEpsilon}{\textbf{\textEpsilon}}
+\newcommand{\boldtextVarepsilon}{\textbf{\textEpsilon}}
+\newcommand{\boldtextZeta}{\textbf{\textZeta}}
+\newcommand{\boldtextEta}{\textbf{\textEta}}
+\newcommand{\boldtextTheta}{\textbf{\textTheta}}
+\newcommand{\boldtextVartheta}{\textbf{\textTheta}}
+\newcommand{\boldtextIota}{\textbf{\textIota}}
+\newcommand{\boldtextKappa}{\textbf{\textKappa}}
+\newcommand{\boldtextLambda}{\textbf{\textLambda}}
+\newcommand{\boldtextMu}{\textbf{\textMu}}
+\newcommand{\boldtextNu}{\textbf{\textNu}}
+\newcommand{\boldtextOmicron}{\textbf{\textOmicron}}
+\newcommand{\boldtextPi}{\textbf{\textPi}}
+\newcommand{\boldtextVarpi}{\textbf{\textPi}}
+\newcommand{\boldtextRho}{\textbf{\textRho}}
+\newcommand{\boldtextVarrho}{\textbf{\textRho}}
+\newcommand{\boldtextSigma}{\textbf{\textSigma}}
+\newcommand{\boldtextTau}{\textbf{\textTau}}
+\newcommand{\boldtextUpsilon}{\textbf{\textUpsilon}}
+\newcommand{\boldtextPhi}{\textbf{\textPhi}}
+\newcommand{\boldtextVarphi}{\textbf{\textPhi}}
+\newcommand{\boldtextChi}{\textbf{\textChi}}
+\newcommand{\boldtextPsi}{\textbf{\textPsi}}
+\newcommand{\boldtextOmega}{\textbf{\textOmega}}
+% Math bold roman greek letters
+\newcommand{\boldmathalpha}{\text{\boldtextalpha}}
+\newcommand{\boldmathbeta}{\text{\boldtextbeta}}
+\newcommand{\boldmathgamma}{\text{\boldtextgamma}}
+\newcommand{\boldmathdelta}{\text{\boldtextdelta}}
+\newcommand{\boldmathepsilon}{\text{\boldtextepsilon}}
+\newcommand{\boldmathvarepsilon}{\text{\boldtextepsilon}}
+\newcommand{\boldmathzeta}{\text{\boldtextzeta}}
+\newcommand{\boldmatheta}{\text{\boldtexteta}}
+\newcommand{\boldmaththeta}{\text{\boldtexttheta}}
+\newcommand{\boldmathvartheta}{\text{\boldtexttheta}}
+\newcommand{\boldmathiota}{\text{\boldtextiota}}
+\newcommand{\boldmathkappa}{\text{\boldtextkappa}}
+\newcommand{\boldmathlambda}{\text{\boldtextlambda}}
+\newcommand{\boldmathmu}{\text{\boldtextmu}}
+\newcommand{\boldmathnu}{\text{\boldtextnu}}
+\newcommand{\boldmathomicron}{\text{\boldtextomicron}}
+\newcommand{\boldmathpi}{\text{\boldtextpi}}
+\newcommand{\boldmathvarpi}{\text{\boldtextpi}}
+\newcommand{\boldmathrho}{\text{\boldtextrho}}
+\newcommand{\boldmathvarrho}{\text{\boldtextrho}}
+\newcommand{\boldmathsigma}{\text{\boldtextsigma}}
+\newcommand{\boldmathtau}{\text{\boldtexttau}}
+\newcommand{\boldmathupsilon}{\text{\boldtextupsilon}}
+\newcommand{\boldmathphi}{\text{\boldtextphi}}
+\newcommand{\boldmathvarphi}{\text{\boldtextphi}}
+\newcommand{\boldmathchi}{\text{\boldtextchi}}
+\newcommand{\boldmathpsi}{\text{\boldtextpsi}}
+\newcommand{\boldmathomega}{\text{\boldtextomega}}
+% Text bold roman capital greek letters
+\newcommand{\boldmathAlpha}{\text{\boldtextAlpha}}
+\newcommand{\boldmathBeta}{\text{\boldtextBeta}}
+\newcommand{\boldmathGamma}{\text{\boldtextGamma}}
+\newcommand{\boldmathDelta}{\text{\boldtextDelta}}
+\newcommand{\boldmathEpsilon}{\text{\boldtextEpsilon}}
+\newcommand{\boldmathVarepsilon}{\text{\boldtextEpsilon}}
+\newcommand{\boldmathZeta}{\text{\boldtextZeta}}
+\newcommand{\boldmathEta}{\text{\boldtextEta}}
+\newcommand{\boldmathTheta}{\text{\boldtextTheta}}
+\newcommand{\boldmathVartheta}{\text{\boldtextTheta}}
+\newcommand{\boldmathIota}{\text{\boldtextIota}}
+\newcommand{\boldmathKappa}{\text{\boldtextKappa}}
+\newcommand{\boldmathLambda}{\text{\boldtextLambda}}
+\newcommand{\boldmathMu}{\text{\boldtextMu}}
+\newcommand{\boldmathNu}{\text{\boldtextNu}}
+\newcommand{\boldmathOmicron}{\text{\boldtextOmicron}}
+\newcommand{\boldmathPi}{\text{\boldtextPi}}
+\newcommand{\boldmathVarpi}{\text{\boldtextPi}}
+\newcommand{\boldmathRho}{\text{\boldtextRho}}
+\newcommand{\boldmathVarrho}{\text{\boldtextRho}}
+\newcommand{\boldmathSigma}{\text{\boldtextSigma}}
+\newcommand{\boldmathTau}{\text{\boldtextTau}}
+\newcommand{\boldmathUpsilon}{\text{\boldtextUpsilon}}
+\newcommand{\boldmathPhi}{\text{\boldtextPhi}}
+\newcommand{\boldmathVarphi}{\text{\boldtextPhi}}
+\newcommand{\boldmathChi}{\text{\boldtextChi}}
+\newcommand{\boldmathPsi}{\text{\boldtextPsi}}
+\newcommand{\boldmathOmega}{\text{\boldtextOmega}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     Commandes                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% basdepage
+\newcommand\basdepage[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+% blackboard
+\newcommand{\ens}[1]{\mathbf{#1}}
+\newcommand{\esp}[1]{\mathcal{#1}}
+\newcommand{\fk}[1]{\mathfrak{#1}}
+\newcommand{\mat}[1]{\mathcal{#1}} % equiv \esp
+\newcommand{\N}{\ens{N}}
+\newcommand{\Z}{\ens{Z}}
+\newcommand{\D}{\ens{D}}
+\newcommand{\Q}{\ens{Q}}
+\newcommand{\R}{\ens{R}}
+\newcommand{\C}{\ens{C}}
+\newcommand{\K}{\ens{K}}
+\newcommand{\etoile}{^{\displaystyle \ast}}
+\newcommand{\adj}{^{\dagger}}
+\newcommand{\transp}{^{\top}}
+\newcommand{\std}{\text{°}}
+\newcommand{\odeg}{\std}
+\newcommand{\fonc}[2]{\left\langle {#1},\,{#2}\right\rangle}
+\newcommand{\sfonc}[2]{\langle {#1},\,{#2}\rangle}
+
+% opérateurs
+\DeclareMathOperator{\pgcd}{pgcd}
+\DeclareMathOperator{\Vect}{Vect}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Image}{Im}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\lap}{\laplacian}
+\DeclareMathOperator{\vlap}{\vect{\nabla}^2}
+\DeclareMathOperator{\ham}{\mathcal H}
+\DeclareMathOperator{\lag}{\mathcal L}
+\DeclareMathOperator{\mom}{\mathcal M}
+\DeclareMathOperator{\act}{\mathcal S}
+\DeclareMathOperator{\lang}{\mathscr L}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\p}{\mathbb P}
+\DeclareMathOperator{\arctandeux}{arctan2}
+\DeclareMathOperator{\dal}{\square}
+\DeclareMathOperator{\TF}{\@TF}
+\DeclareMathOperator{\FT}{\@TF}
+\DeclareMathOperator{\VP}{\@VP}
+
+
+\newcommand{\vect}[1]{\@vect{#1}}
+\newcommand{\rot}{\curl}
+
+\newcommand{\name}{\@name}
+\newcommand{\unite}[1]{\mathrm{~#1}}
+\newcommand{\unit}[1]{\unite{#1}}
+\newcommand{\range}{\text{--}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\im}{\mathrm{i}}
+\newcommand{\jm}{\mathrm{j}}
+\newcommand{\E}[1]{\times 10^{#1}}
+\newcommand{\cqfd}{\hspace*{0pt} \hfill $\square$}
+\newcommand{\NA}{\mathcal{N}_\mathrm{A}}
+\newcommand{\kB}{k_\mathrm{B}}
+\newcommand{\muB}{\mu_\mathrm{B}}
+\newcommand{\G}{\@G}
+\newcommand{\ul}{\underline}
+\newcommand{\ol}{\overline}
+\newcommand{\eqdef}{\@eqdef}
+\newcommand{\cste}{\@cste}
+\newcommand{\cst}{\mathrm{cst}}
+\newcommand{\moy}[1]{\left\langle{#1}\right\rangle}
+\newcommand{\smoy}[1]{\langle{#1}\rangle}
+\newcommand{\mean}[1]{\smoy{#1}}
+\newcommand{\smean}[1]{\smoy{#1}}
+\newcommand{\ope}[1]{\hat{#1}}
+\newcommand{\opevect}[1]{\hat{\vb{#1}}}
+\newcommand{\sol}{\odot}
+\newcommand{\sun}{\odot}
+\newcommand{\ter}{\oplus}
+\newcommand{\uma}{\mathrm{u}}
+\DeclareDocumentCommand\atom{m g g g}{
+  \IfNoValueTF{#2}{\ce{#1}}{
+    \IfNoValueTF{#3}{\ce{^{\text{$#2$}}{#1}}}{
+      \IfNoValueTF{#4}{\ce{^{\text{$#2$}}_{\text{$#3$}}{#1}}}{
+        \ce{^{\text{$#2$}}_{\text{$#3$}}{#1}_{\text{$#4$}}}
+      }
+    }
+  }
+}
+\DeclareDocumentCommand\underbraceset{m g}{
+  \IfNoValueTF{#2}{\underbrace{#1}}{
+    \underset{#1}{\underbrace{#2}}
+  }
+}
+% vecteurs unitaires
+\newcommand{\ux}{\@u{x}}
+\newcommand{\uy}{\@u{y}}
+\newcommand{\uz}{\@u{z}}
+\newcommand{\ur}{\@u{r}}
+\newcommand{\un}{\@u{n}}
+\newcommand{\ut}{\@u{t}}
+\newcommand{\urho}{\@u{\rho}}
+\newcommand{\utheta}{\@u{\theta}}
+\newcommand{\uvartheta}{\@u{\vartheta}}
+\newcommand{\uphi}{\@u{\phi}}
+\newcommand{\uvarphi}{\@u{\varphi}}
+
+\newcommand{\ex}{\@e{x}}
+\newcommand{\ey}{\@e{y}}
+\newcommand{\ez}{\@e{z}}
+\newcommand{\er}{\@e{r}}
+\newcommand{\en}{\@e{n}}
+\newcommand{\et}{\@e{t}}
+\newcommand{\erho}{\@e{\rho}}
+\newcommand{\etheta}{\@e{\theta}}
+\newcommand{\evartheta}{\@e{\vartheta}}
+\newcommand{\ephi}{\@e{\phi}}
+\newcommand{\evarphi}{\@e{\varphi}}
+
+\newcommand{\vux}{\@vu{x}}
+\newcommand{\vuy}{\@vu{y}}
+\newcommand{\vuz}{\@vu{z}}
+\newcommand{\vur}{\@vu{r}}
+\newcommand{\vun}{\@vu{n}}
+\newcommand{\vut}{\@vu{t}}
+\newcommand{\vurho}{\@vu{\rho}}
+\newcommand{\vutheta}{\@vu{\theta}}
+\newcommand{\vuvartheta}{\@vu{\vartheta}}
+\newcommand{\vuphi}{\@vu{\phi}}
+\newcommand{\vuvarphi}{\@vu{\varphi}}
+
+% d, déron, etc.
+\newcommand{\ds}{\deh{s}}
+\newcommand{\dx}{\deh{x}}
+\newcommand{\dy}{\deh{y}}
+\newcommand{\dz}{\deh{z}}
+\newcommand{\dt}{\deh{t}}
+\newcommand{\dr}{\deh{r}}
+\newcommand{\drho}{\deh{\rho}}
+\newcommand{\dtheta}{\deh{\theta}}
+\newcommand{\dvartheta}{\deh{\vartheta}}
+\newcommand{\dphi}{\deh{\phi}}
+\newcommand{\dvarphi}{\deh{\varphi}}
+\newcommand{\deron}{\partial}
+\newcommand{\ddr}{\dd[3]{\vect r}}
+\newcommand{\ddp}{\dd[3]{\vect p}}
+\newcommand{\ddk}{\dd[3]{\vect k}}
+
+\newcommand{\deh}{\dd}
+
+\def\diffD{\mathrm{D}}
+\DeclareDocumentCommand\Differential{ o g d() }{ % Differential 'd'
+	% o: optional n for nth differential
+	% g: optional argument for readability and to control spacing
+	% d: long-form as in d(cos x)
+	\IfNoValueTF{#2}{
+		\IfNoValueTF{#3}
+			{\diffD\IfNoValueTF{#1}{}{^{#1}}}
+			{\mathinner{\diffD\IfNoValueTF{#1}{}{^{#1}}\argopen(#3\argclose)}}
+		}
+		{\mathinner{\diffD\IfNoValueTF{#1}{}{^{#1}}#2} \IfNoValueTF{#3}{}{(#3)}}
+	}
+\DeclareDocumentCommand\Deh{}{\Differential} % Shorthand for \differential
+\DeclareDocumentCommand\Variation{ o g d() }{ % Functional variation
+	% o: optional n for nth differential
+	% g: optional argument for readability and to control spacing
+	% d: long-form as in D(F(g))
+	\IfNoValueTF{#2}{
+		\IfNoValueTF{#3}
+			{\Delta \IfNoValueTF{#1}{}{^{#1}}}
+			{\mathinner{\Delta \IfNoValueTF{#1}{}{^{#1}}\argopen(#3\argclose)}}
+		}
+		{\mathinner{\Delta \IfNoValueTF{#1}{}{^{#1}}#2} \IfNoValueTF{#3}{}{(#3)}}
+	}
+\DeclareDocumentCommand\Var{}{\Variation} % Shorthand for \differential
+
+\newcommand{\cfill}{\hspace*{0cm}\hfill\hspace*{0cm}}
+
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\etal}{\textit{et al}}
+\newcommand{\eg}{\textit{e.g.}}
+
+\newenvironment{question}[1]{\textbf{Q\,#1.}}{}
+\newenvironment{systeme}{\left\{\begin{array}{ll}}{\end{array}\right.} % Attention, l'accolade est bien fermée ici !
+\newenvironment{system}{\left\{\begin{array}{ll}}{\end{array}\right.}
+
+\newcommand{\setWarning}[1]{\def\varwarning{{#1}}}
+\newcommand{\setTitle}[1]{\def\vartitle{{#1}}}
+\newcommand{\setSubTitle}[1]{\def\varsubtitle{{#1}}}
+\newcommand{\setAuthor}[1]{\def\varauthor{{#1}}}
+\newcommand{\setInstitution}[1]{\def\varinstitution{{#1}}}
+\DeclareDocumentCommand\setInstitution{mo}{\def\varinstitution{{#1}}\IfValueT{#2}{\def\varinstitutionbis{{#2}}}}
+\newcommand{\setShortInst}[1]{\def\varshortinst{{#1}}}
+\newcommand{\setDate}[1]{\def\vardate{{#1}}}
+
+\newcommand{\getWarning}{\varwarning}
+\newcommand{\getTitle}{\vartitle}
+\newcommand{\getSubTitle}{\varsubtitle}
+\newcommand{\getAuthor}{\varauthor}
+\newcommand{\getInstitution}{\varinstitution}
+\newcommand{\getInstitutionbis}{\varinstitutionbis}
+\newcommand{\getShortInst}{\varshortinst}
+\newcommand{\getDate}{\vardate}
+
+\newcommand{\setPage}[1]{\setcounter{page}{{#1}}}
+\newcommand{\setPart}[1]{\setcounter{part}{{#1}}}
+\newcommand{\setSection}[1]{\setcounter{section}{{#1}}}
+\newcommand{\setSubSection}[1]{\setcounter{subsection}{{#1}}}
+\newcommand{\setSubSubSection}[1]{\setcounter{subsubsection}{{#1}}}
+\newcommand{\setFigure}[1]{\setcounter{figure}{{#1}}}
+
+
+\newcommand{\shorttitle}{
+    \maketitle
+}
+
+\DeclareDocumentCommand\longtitle{s o m}{
+  \thispagestyle{empty}
+  \IfBooleanTF{#1}{
+    \vspace*{5cm}
+  }
+  {
+    \includegraphics[height=2cm]{{#3}}
+    \vspace*{3cm}
+  }
+  \begin{spacing}{1.7}
+    \begin{center}
+      {\huge\vartitle}
+   
+      \vspace*{1cm}
+      {\Large\varsubtitle}
+    
+      \vspace*{1cm}
+      {\large\varauthor\\\varinstitution\\\varinstitutionbis}
+    
+      \vspace*{1cm}
+      {\large\vardate}
+    \end{center}
+  \end{spacing}
+  \IfValueT{#2}{
+    \vfill
+    \begin{center}
+      {#2}
+    \end{center}
+    \vfill
+  }
+  \newpage
+  \tableofcontents
+  \newpage
+}
+
+% ! AASTeX MACROS
+%  These Macros are taken from the AAS TeX macro package version 5.2
+%  and are compatible with the macros in the A&A document class
+%  version 7.0
+%  Include this file in your LaTeX source only if you are not using
+%  the AAS TeX macro package or the A&A document class and need to
+%  resolve the macro definitions in the TeX/BibTeX entries returned by
+%  the ADS abstract service.
+%
+%  If you plan not to use this file to resolve the journal macros
+%  rather than the whole AAS TeX macro package, you should save the
+%  file as ``aas_macros.sty'' and then include it in your LaTeX paper
+%  by using a construct such as:
+%	\documentstyle[11pt,aas_macros]{article}
+%
+%  For more information on the AASTeX and A&A packages, please see:
+%       http://journals.aas.org/authors/aastex.html
+%       ftp://ftp.edpsciences.org/pub/aa/readme.html
+%  For more information about ADS abstract server, please see:
+%       http://adsabs.harvard.edu/ads_abstracts.html
+%
+
+% Abbreviations for journals.  The object here is to provide authors
+% with convenient shorthands for the most "popular" (often-cited)
+% journals; the author can use these markup tags without being concerned
+% about the exact form of the journal abbreviation, or its formatting.
+% It is up to the keeper of the macros to make sure the macros expand
+% to the proper text.  If macro package writers agree to all use the
+% same TeX command name, authors only have to remember one thing, and
+% the style file will take care of editorial preferences.  This also
+% applies when a single journal decides to revamp its abbreviating
+% scheme, as happened with the ApJ (Abt 1991).
+
+\let\jnl@style=\rm
+\def\ref@jnl#1{{\jnl@style#1}}
+
+\def\aj{\ref@jnl{AJ}}                   % Astronomical Journal
+\def\actaa{\ref@jnl{Acta Astron.}}      % Acta Astronomica
+\def\araa{\ref@jnl{ARA\&A}}             % Annual Review of Astron and Astrophys
+\def\apj{\ref@jnl{ApJ}}                 % Astrophysical Journal
+\def\apjl{\ref@jnl{ApJ}}                % Astrophysical Journal, Letters
+\def\apjs{\ref@jnl{ApJS}}               % Astrophysical Journal, Supplement
+\def\ao{\ref@jnl{Appl.~Opt.}}           % Applied Optics
+\def\apss{\ref@jnl{Ap\&SS}}             % Astrophysics and Space Science
+\def\aap{\ref@jnl{A\&A}}                % Astronomy and Astrophysics
+\def\aapr{\ref@jnl{A\&A~Rev.}}          % Astronomy and Astrophysics Reviews
+\def\aaps{\ref@jnl{A\&AS}}              % Astronomy and Astrophysics, Supplement
+\def\azh{\ref@jnl{AZh}}                 % Astronomicheskii Zhurnal
+\def\baas{\ref@jnl{BAAS}}               % Bulletin of the AAS
+\def\bac{\ref@jnl{Bull. astr. Inst. Czechosl.}}
+                % Bulletin of the Astronomical Institutes of Czechoslovakia
+\def\caa{\ref@jnl{Chinese Astron. Astrophys.}}
+                % Chinese Astronomy and Astrophysics
+\def\cjaa{\ref@jnl{Chinese J. Astron. Astrophys.}}
+                % Chinese Journal of Astronomy and Astrophysics
+\def\icarus{\ref@jnl{Icarus}}           % Icarus
+\def\jcap{\ref@jnl{J. Cosmology Astropart. Phys.}}
+                % Journal of Cosmology and Astroparticle Physics
+\def\jrasc{\ref@jnl{JRASC}}             % Journal of the RAS of Canada
+\def\memras{\ref@jnl{MmRAS}}            % Memoirs of the RAS
+\def\mnras{\ref@jnl{MNRAS}}             % Monthly Notices of the RAS
+\def\na{\ref@jnl{New A}}                % New Astronomy
+\def\nar{\ref@jnl{New A Rev.}}          % New Astronomy Review
+\def\pra{\ref@jnl{Phys.~Rev.~A}}        % Physical Review A: General Physics
+\def\prb{\ref@jnl{Phys.~Rev.~B}}        % Physical Review B: Solid State
+\def\prc{\ref@jnl{Phys.~Rev.~C}}        % Physical Review C
+\def\prd{\ref@jnl{Phys.~Rev.~D}}        % Physical Review D
+\def\pre{\ref@jnl{Phys.~Rev.~E}}        % Physical Review E
+\def\prl{\ref@jnl{Phys.~Rev.~Lett.}}    % Physical Review Letters
+\def\pasa{\ref@jnl{PASA}}               % Publications of the Astron. Soc. of Australia
+\def\pasp{\ref@jnl{PASP}}               % Publications of the ASP
+\def\pasj{\ref@jnl{PASJ}}               % Publications of the ASJ
+\def\rmxaa{\ref@jnl{Rev. Mexicana Astron. Astrofis.}}%
+                % Revista Mexicana de Astronomia y Astrofisica
+\def\qjras{\ref@jnl{QJRAS}}             % Quarterly Journal of the RAS
+\def\skytel{\ref@jnl{S\&T}}             % Sky and Telescope
+\def\solphys{\ref@jnl{Sol.~Phys.}}      % Solar Physics
+\def\sovast{\ref@jnl{Soviet~Ast.}}      % Soviet Astronomy
+\def\ssr{\ref@jnl{Space~Sci.~Rev.}}     % Space Science Reviews
+\def\zap{\ref@jnl{ZAp}}                 % Zeitschrift fuer Astrophysik
+\def\nat{\ref@jnl{Nature}}              % Nature
+\def\iaucirc{\ref@jnl{IAU~Circ.}}       % IAU Cirulars
+\def\aplett{\ref@jnl{Astrophys.~Lett.}} % Astrophysics Letters
+\def\apspr{\ref@jnl{Astrophys.~Space~Phys.~Res.}}
+                % Astrophysics Space Physics Research
+\def\bain{\ref@jnl{Bull.~Astron.~Inst.~Netherlands}}
+                % Bulletin Astronomical Institute of the Netherlands
+\def\fcp{\ref@jnl{Fund.~Cosmic~Phys.}}  % Fundamental Cosmic Physics
+\def\gca{\ref@jnl{Geochim.~Cosmochim.~Acta}}   % Geochimica Cosmochimica Acta
+\def\grl{\ref@jnl{Geophys.~Res.~Lett.}} % Geophysics Research Letters
+\def\jcp{\ref@jnl{J.~Chem.~Phys.}}      % Journal of Chemical Physics
+\def\jgr{\ref@jnl{J.~Geophys.~Res.}}    % Journal of Geophysics Research
+\def\jqsrt{\ref@jnl{J.~Quant.~Spec.~Radiat.~Transf.}}
+                % Journal of Quantitiative Spectroscopy and Radiative Transfer
+\def\memsai{\ref@jnl{Mem.~Soc.~Astron.~Italiana}}
+                % Mem. Societa Astronomica Italiana
+\def\nphysa{\ref@jnl{Nucl.~Phys.~A}}   % Nuclear Physics A
+\def\physrep{\ref@jnl{Phys.~Rep.}}   % Physics Reports
+\def\physscr{\ref@jnl{Phys.~Scr}}   % Physica Scripta
+\def\planss{\ref@jnl{Planet.~Space~Sci.}}   % Planetary Space Science
+\def\procspie{\ref@jnl{Proc.~SPIE}}   % Proceedings of the SPIE
+
+\let\astap=\aap
+\let\apjlett=\apjl
+\let\apjsupp=\apjs
+\let\applopt=\ao
+
+
+\endinput
