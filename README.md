@@ -1,1 +1,1 @@
-**Moved to https://codeberg.org/Yael-II/LaTeX-Template/**
+**Moved to https://codeberg.org/Yael-II/LaTeX-Package/**
